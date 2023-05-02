@@ -1,0 +1,74 @@
+###################### docker commands ########################################
+
+=============  app.py ===================================
+from flask import Flask
+from redis import Redis, RedisError
+import os
+import socket
+
+# Connect to Redis
+redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    try:
+        visites = redis.incr("compteur")
+    except RedisError:
+        visites = "<i>Erreur de connection Redis, compteur desactive</i>"
+
+    html = "<h3>Bonjour {nom}!</h3>" \
+           "<b>Hostname:</b> {hostname}<br/>" \
+           "<b>Visites:</b> {visites} <br/>" \
+           "<p>Abonne toi!</p>"
+    return html.format(nom=os.getenv("NOM", "Ahmed CHOUCHEN 28/04/2023"), hostname=socket.gethostname(), visites=visites)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=82)
+=============  Dockerfile ===================================
+FROM python:2.7-slim
+WORKDIR /app
+COPY . /app
+RUN pip install -r requirements.txt
+EXPOSE 82
+ENV NOM BISSOUSSA
+CMD ["python", "app.py"]
+=============  requirements.txt ===================================
+Flask
+Redis
+=================== _config.yml ===================================
+theme: jekyll-theme-cayman
+=================== docker-compose.yml ===================================
+version: "3"
+services:
+  monapp:
+    build: .
+    image: monimage
+    depends_on:
+      - redis
+    ports:
+      - "80:80"
+    networks:
+      - monreseau
+    environment:
+      - NOM=les amis
+  redis:
+    image: redis
+    networks:
+      - monreseau
+
+networks:
+  monreseau:
+####################################################
+
+   ##1er cas use :
+   
+       docker build -t ahmed-im .
+       docker run -p 82:82 ahmed-im
+       http://192.168.56.5:82/
+    
+    ##2eme cas use :
+
+       docker compose up
+       http://192.168.56.5:82/

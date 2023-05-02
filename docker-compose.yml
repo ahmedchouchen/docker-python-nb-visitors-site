@@ -2,19 +2,19 @@ version: "3"
 services:
   monapp:
     build: .
-    image: monimage
+    image: calculatrice
     depends_on:
       - redis
     ports:
-      - "80:80"
+      - "82:82"
     networks:
-      - monreseau
+      - ooredoo
     environment:
-      - NOM=les amis
+      - NOM=Ahmed CHOUCHEN
   redis:
     image: redis
     networks:
-      - monreseau
+      - ooredoo
 
 networks:
-  monreseau:
+  ooredoo:
