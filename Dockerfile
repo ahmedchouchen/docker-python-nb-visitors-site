@@ -3,5 +3,5 @@ WORKDIR /app
 COPY . /app
 RUN pip install -r requirements.txt
 EXPOSE 82
-ENV NOM SFAX
+ENV NOM Ahmed CHOUCHEN
 CMD ["python", "app.py"]

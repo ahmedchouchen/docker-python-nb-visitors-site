@@ -2,19 +2,18 @@ version: "3"
 services:
   monapp:
     build: .
-    image: calculatrice
+    image: first-im
     depends_on:
       - redis
     ports:
       - "82:82"
     networks:
-      - ooredoo
+      - monreseau
     environment:
       - NOM=Ahmed CHOUCHEN
   redis:
     image: redis
     networks:
-      - ooredoo
-
+      - monreseau
 networks:
-  ooredoo:
+  monreseau:

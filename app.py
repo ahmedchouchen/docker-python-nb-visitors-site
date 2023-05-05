@@ -14,12 +14,11 @@ def hello():
     except RedisError:
         visites = "<i>Erreur de connection Redis, compteur desactive</i>"
 
-    html = "<h3>########### DEMO Docker By :  {nom}! ##############</h3>" \
+    html = "<h3> ##### DEMO Docker By {nom}! ####</h3>" \
            "<b>Hostname:</b> {hostname}<br/>" \
            "<b>Visites:</b> {visites} <br/>" \
-           "<p>Abonne toi!</p>" \
-           
-    return html.format(nom=os.getenv("NOM", "Ahmed CHOUCHEN 28/04/2023"), hostname=socket.gethostname(), visites=visites)
+           "<p>Abonne toi!</p>"
+    return html.format(nom=os.getenv("NOM", "Ahmed CHOUCHEN 04/05/2023"), hostname=socket.gethostname(), visites=visites)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=82)
